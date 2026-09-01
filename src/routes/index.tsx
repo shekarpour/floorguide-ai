@@ -42,8 +42,9 @@ function Index() {
   useEffect(() => {
     if (phase !== "working") return;
     setStage(0);
+    // Live requests take ~15–30s; pace the stages to stay honest.
     const timers = WORKFLOW_STAGES.map((_, i) =>
-      setTimeout(() => setStage(i), i * 850),
+      setTimeout(() => setStage(i), i * 4000),
     );
     return () => timers.forEach(clearTimeout);
   }, [phase]);
