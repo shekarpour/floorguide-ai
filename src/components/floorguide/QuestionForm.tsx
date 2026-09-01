@@ -67,90 +67,94 @@ export function QuestionForm({
           Cited answers from safety, maintenance, and quality sources.
         </p>
 
-        <form onSubmit={handleSubmit} noValidate className="mt-6">
-          <div className="flex items-baseline justify-between gap-3">
-            <label
-              htmlFor={questionId}
-              className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground"
-            >
-              Plant question
-            </label>
-            <span className="text-[11px] tabular-nums text-muted-foreground">
-              {question.length}/{MAX}
-            </span>
-          </div>
-          <textarea
-            id={questionId}
-            name="question"
-            required
-            autoFocus
-            rows={5}
-            maxLength={MAX}
-            value={question}
-            onChange={(e) => onQuestionChange(e.target.value)}
-            placeholder="The CV-07 conveyor motor is overheating. Can I open the guard and inspect it without stopping the line?"
-            aria-invalid={touched && !!questionError}
-            aria-describedby={touched && questionError ? `${questionId}-error` : undefined}
-            className={`mt-2 resize-y text-base leading-relaxed ${fieldClass}`}
-          />
-          {touched && questionError && (
-            <p id={`${questionId}-error`} className="mt-1.5 text-xs font-semibold text-warning">
-              {questionError}
-            </p>
-          )}
-
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
-            <div className="sm:w-56">
+        <form onSubmit={handleSubmit} noValidate className="mt-7">
+          {/* Name first — identifies the supervisor before the question */}
+          <div className="max-w-xs">
+            <div className="flex items-baseline justify-between gap-2">
               <label
                 htmlFor={nameId}
-                className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+                className="text-xs font-semibold uppercase tracking-[0.06em] text-primary"
               >
                 Name
               </label>
-              <input
-                id={nameId}
-                name="user_name"
-                type="text"
-                required
-                autoComplete="name"
-                value={name}
-                onChange={(e) => onNameChange(e.target.value)}
-                placeholder="Enter your name"
-                aria-invalid={touched && !!nameError}
-                aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
-                className={`mt-2 ${fieldClass}`}
-              />
               {touched && nameError && (
-                <p id={`${nameId}-error`} className="mt-1.5 text-xs font-semibold text-warning">
+                <span id={`${nameId}-error`} className="text-[11px] font-semibold text-warning">
                   {nameError}
-                </p>
+                </span>
               )}
             </div>
-
-            <div className="flex flex-1 flex-wrap items-center gap-2.5 sm:justify-end">
-              <button
-                type="button"
-                onClick={() => {
-                  setTouched(false);
-                  onClear();
-                }}
-                className="inline-flex items-center gap-2 rounded-xl border border-input bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
-              >
-                <Eraser className="h-4 w-4" aria-hidden="true" />
-                Clear
-              </button>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-colors hover:bg-primary/90 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <Search className="h-4 w-4" aria-hidden="true" />
-                {isSubmitting ? "Working…" : "Find grounded answer"}
-              </button>
-            </div>
+            <input
+              id={nameId}
+              name="user_name"
+              type="text"
+              required
+              autoComplete="name"
+              value={name}
+              onChange={(e) => onNameChange(e.target.value)}
+              placeholder="Enter your name"
+              aria-invalid={touched && !!nameError}
+              aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
+              className={`mt-2 ${fieldClass}`}
+            />
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-2 border-t border-hairline pt-5">
+          {/* Question — the primary focus */}
+          <div className="mt-6">
+            <div className="flex items-baseline justify-between gap-3">
+              <label
+                htmlFor={questionId}
+                className="text-xs font-semibold uppercase tracking-[0.06em] text-primary"
+              >
+                Plant question
+              </label>
+              <span className="text-[11px] tabular-nums text-muted-foreground">
+                {question.length}/{MAX}
+              </span>
+            </div>
+            <textarea
+              id={questionId}
+              name="question"
+              required
+              autoFocus
+              rows={6}
+              maxLength={MAX}
+              value={question}
+              onChange={(e) => onQuestionChange(e.target.value)}
+              placeholder="The CV-07 conveyor motor is overheating. Can I open the guard and inspect it without stopping the line?"
+              aria-invalid={touched && !!questionError}
+              aria-describedby={touched && questionError ? `${questionId}-error` : undefined}
+              className={`mt-2 resize-y text-base leading-relaxed ${fieldClass}`}
+            />
+            {touched && questionError && (
+              <p id={`${questionId}-error`} className="mt-1.5 text-xs font-semibold text-warning">
+                {questionError}
+              </p>
+            )}
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:justify-end">
+            <button
+              type="button"
+              onClick={() => {
+                setTouched(false);
+                onClear();
+              }}
+              className="inline-flex items-center gap-2 rounded-xl border border-input bg-background px-4 py-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none"
+            >
+              <Eraser className="h-4 w-4" aria-hidden="true" />
+              Clear
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-all hover:bg-primary/90 hover:shadow-panel focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Search className="h-4 w-4" aria-hidden="true" />
+              {isSubmitting ? "Working…" : "Find grounded answer"}
+            </button>
+          </div>
+
+          <div className="mt-7 flex flex-wrap gap-2 border-t border-hairline pt-5">
             {EXAMPLES.map((ex) => (
               <button
                 key={ex}
