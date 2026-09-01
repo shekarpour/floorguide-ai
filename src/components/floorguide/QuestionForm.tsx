@@ -21,7 +21,7 @@ export interface QuestionFormProps {
 }
 
 const fieldClass =
-  "w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground transition-colors placeholder:text-muted-foreground/60 hover:border-primary/40 focus-visible:border-ring focus-visible:outline-none";
+  "w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground shadow-sm transition-all placeholder:text-muted-foreground/60 hover:border-primary/50 hover:bg-primary/[0.015] focus-visible:border-primary focus-visible:bg-primary/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/15 focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export function QuestionForm({
   name,
@@ -54,9 +54,21 @@ export function QuestionForm({
   return (
     <section
       aria-labelledby="ask-heading"
-      className="w-full rounded-2xl border border-hairline bg-background p-6 shadow-panel md:p-9"
+      className="relative w-full overflow-hidden rounded-2xl border border-hairline bg-gradient-to-b from-background via-background to-primary/[0.02] p-6 shadow-panel md:p-9"
     >
-      <div className="mx-auto max-w-2xl">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-primary to-accent"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-primary/[0.04] blur-3xl"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-accent/[0.06] blur-3xl"
+      />
+      <div className="relative mx-auto max-w-2xl">
         <h2
           id="ask-heading"
           className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]"
@@ -139,7 +151,7 @@ export function QuestionForm({
                 setTouched(false);
                 onClear();
               }}
-              className="inline-flex items-center gap-2 rounded-xl border border-input bg-background px-4 py-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none"
+              className="inline-flex items-center gap-2 rounded-xl border border-input bg-background px-4 py-3 text-sm font-semibold text-muted-foreground shadow-sm transition-all hover:border-accent/50 hover:bg-accent/[0.06] hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20"
             >
               <Eraser className="h-4 w-4" aria-hidden="true" />
               Clear
@@ -147,7 +159,7 @@ export function QuestionForm({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-all hover:bg-primary/90 hover:shadow-panel focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-primary-700 px-7 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-all hover:from-primary-600 hover:to-primary-800 hover:shadow-panel hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
             >
               <Search className="h-4 w-4" aria-hidden="true" />
               {isSubmitting ? "Working…" : "Find grounded answer"}
@@ -160,10 +172,10 @@ export function QuestionForm({
                 key={ex}
                 type="button"
                 onClick={() => onQuestionChange(ex)}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 text-left text-xs text-surface-foreground transition-colors hover:border-accent/60 hover:bg-safety-muted focus-visible:outline-none"
+                className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 text-left text-xs text-surface-foreground shadow-sm transition-all hover:border-accent/60 hover:bg-accent/[0.08] hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20"
               >
                 <CornerDownLeft
-                  className="h-3 w-3 text-muted-foreground/70 transition-colors group-hover:text-safety-foreground"
+                  className="h-3 w-3 text-primary/70 transition-colors group-hover:text-accent-foreground"
                   aria-hidden="true"
                 />
                 {ex}
