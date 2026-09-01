@@ -4,12 +4,36 @@
  * Used only when VITE_USE_MOCK_API === "true". Never imported by production
  * request paths other than the explicit guard in `api.ts`.
  */
-import type { AskRequest, AskResponse } from "@/types/floorguide";
+import type { AnswerBody, AskRequest, AskResponse } from "@/types/floorguide";
 
 export function buildMockResponse(req: AskRequest): AskResponse {
   const q = req.question.toLowerCase();
   const isQuality = /quality|spec|tolerance|seal|weight|label/.test(q);
   const isSafety = /guard|reach|jam|lock|hot|overheat|safe|restart/.test(q);
+
+  const answer: AnswerBody = {
+    label: "Recommended answer",
+    summary:
+      "Do not open the guard or inspect the motor internally while the conveyor is operating.",
+    actions: [
+      "Stop feeding product and perform an orderly line shutdown.",
+      "Record the alarm, load, operating condition, and visible symptoms.",
+      "Have authorized Maintenance apply the equipment-specific lockout/tagout procedure.",
+      "After isolation and cooling, inspect ventilation, belt tracking, tension, pulleys, bearings, and the motor fan.",
+    ],
+    warnings: [
+      "An emergency stop or software stop does not isolate hazardous energy.",
+      "Do not repeatedly reset an overload without identifying its cause.",
+    ],
+    missing_information: [
+      "The displayed temperature or overload code was not provided.",
+      "It is unknown whether smoke, burning odor, or arcing is present.",
+    ],
+    escalation:
+      "Remove CV-07 from service and escalate to Engineering or OEM support if overheating or tripping recurs.",
+    citation_ids: ["ev_1", "ev_2"],
+    assumption: "CV-07 is a standard packaging-line conveyor with guard-mounted drive motor.",
+  };
 
   return {
     request_id: `req_mock_${Date.now()}`,
@@ -23,44 +47,37 @@ export function buildMockResponse(req: AskRequest): AskResponse {
             {
               source: "safety" as const,
               reason: "The question involves guard opening and hazardous energy.",
+              subquery: "Guard opening and hazardous-energy rules for CV-07",
             },
           ]
         : []),
       {
         source: "maintenance" as const,
         reason: "The question requires motor-overheating troubleshooting guidance.",
+        subquery: "Conveyor motor overheating and overload troubleshooting",
       },
       ...(isQuality
         ? [
             {
               source: "quality" as const,
               reason: "Product disposition after a line stop must meet QC standards.",
+              subquery: "Product disposition after unplanned line stop",
             },
           ]
         : []),
     ],
-    answer: {
-      summary:
-        "Do not open the guard or inspect the motor internally while the conveyor is operating.",
-      actions: [
-        "Stop feeding product and perform an orderly line shutdown.",
-        "Record the alarm, load, operating condition, and visible symptoms.",
-        "Have authorized Maintenance apply the equipment-specific lockout/tagout procedure.",
-        "After isolation and cooling, inspect ventilation, belt tracking, tension, pulleys, bearings, and the motor fan.",
-      ],
-      warnings: [
-        "An emergency stop or software stop does not isolate hazardous energy.",
-        "Do not repeatedly reset an overload without identifying its cause.",
-      ],
-      missing_information: [
-        "The displayed temperature or overload code was not provided.",
-        "It is unknown whether smoke, burning odor, or arcing is present.",
-      ],
-      escalation:
-        "Remove CV-07 from service and escalate to Engineering or OEM support if overheating or tripping recurs.",
+    decision: {
+      mode: "single",
+      reason:
+        "Both consulted sources agree that internal inspection requires a stopped, isolated conveyor.",
+      ambiguity_level: "low",
+      conflict_detected: false,
     },
+    answer,
+    alternative_answers: [],
     evidence: [
       {
+        evidence_id: "ev_1",
         source: "safety",
         document_id: "SAFE-PKG07-001",
         document_title: "Line PKG-07 Safety Procedures",
@@ -71,6 +88,7 @@ export function buildMockResponse(req: AskRequest): AskResponse {
         relevance: 0.96,
       },
       {
+        evidence_id: "ev_2",
         source: "maintenance",
         document_id: "MAINT-PKG07-001",
         document_title: "Line PKG-07 Maintenance Manual",
@@ -83,6 +101,7 @@ export function buildMockResponse(req: AskRequest): AskResponse {
       ...(isQuality
         ? [
             {
+              evidence_id: "ev_3",
               source: "quality" as const,
               document_id: "QC-PKG07-004",
               document_title: "Packaging Quality Control Standards",
@@ -101,8 +120,17 @@ export function buildMockResponse(req: AskRequest): AskResponse {
       claims_total: 4,
       claims_supported: 4,
       unsupported_claims: [],
-      sources_consulted: isQuality ? 3 : 2,
+      conflict_detected: false,
+      conflict_summary: null,
+      ambiguity_level: "low",
+      decision_reason:
+        "4 of 4 material claims are directly supported by the retrieved sections.",
     },
-    processing: { latency_ms: 1840 },
+    processing: {
+      latency_ms: 1840,
+      model: "mock",
+      mock_mode: true,
+      stages: ["intent", "routing", "retrieval", "verification"],
+    },
   };
 }

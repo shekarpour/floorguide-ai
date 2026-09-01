@@ -2,9 +2,20 @@ import { BadgeCheck, AlertTriangle, Library, ListChecks } from "lucide-react";
 import type { Verification } from "@/types/floorguide";
 import { cn } from "@/lib/utils";
 
-export function VerificationSummary({ verification }: { verification: Verification }) {
+export function VerificationSummary({
+  verification,
+  sourcesConsulted,
+  decisionReason,
+}: {
+  verification: Verification;
+  sourcesConsulted: number;
+  decisionReason?: string;
+}) {
   const unsupported = verification.unsupported_claims.length;
-  const ok = unsupported === 0 && verification.claims_supported >= verification.claims_total;
+  const ok =
+    unsupported === 0 &&
+    verification.claims_supported >= verification.claims_total &&
+    !verification.conflict_detected;
 
   const items = [
     {
@@ -15,7 +26,7 @@ export function VerificationSummary({ verification }: { verification: Verificati
     {
       icon: Library,
       label: "Sources consulted",
-      value: `${verification.sources_consulted}`,
+      value: `${sourcesConsulted}`,
     },
     {
       icon: unsupported ? AlertTriangle : BadgeCheck,
@@ -31,7 +42,7 @@ export function VerificationSummary({ verification }: { verification: Verificati
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h3 id="verification-heading" className="text-sm font-bold text-primary">
-          Verification
+          Why FloorGuide chose this response
         </h3>
         <p
           className={cn(
@@ -49,6 +60,15 @@ export function VerificationSummary({ verification }: { verification: Verificati
           {ok ? "Fully grounded" : "Review required"}
         </p>
       </div>
+
+      {(decisionReason || verification.decision_reason) && (
+        <div className="mt-3 space-y-1.5 text-sm leading-relaxed text-muted-foreground">
+          {decisionReason && <p>{decisionReason}</p>}
+          {verification.decision_reason && verification.decision_reason !== decisionReason && (
+            <p>{verification.decision_reason}</p>
+          )}
+        </div>
+      )}
 
       <dl className="mt-4 grid grid-cols-3 divide-x divide-hairline overflow-hidden rounded-lg border border-hairline">
         {items.map((it) => (
