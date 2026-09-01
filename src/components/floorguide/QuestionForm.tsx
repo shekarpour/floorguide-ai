@@ -21,7 +21,7 @@ export interface QuestionFormProps {
 }
 
 const fieldClass =
-  "w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground shadow-[inset_0_1px_0_rgba(0,0,0,0.01)] transition-colors placeholder:text-muted-foreground/60 hover:border-primary/30 focus-visible:border-ring focus-visible:outline-none";
+  "w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground transition-colors placeholder:text-muted-foreground/60 hover:border-primary/40 focus-visible:border-ring focus-visible:outline-none";
 
 export function QuestionForm({
   name,
@@ -54,39 +54,20 @@ export function QuestionForm({
   return (
     <section
       aria-labelledby="ask-heading"
-      className="rounded-xl border border-hairline bg-background p-5 shadow-card md:p-7"
+      className="w-full rounded-2xl border border-hairline bg-background p-6 shadow-panel md:p-9"
     >
-      <h2 id="ask-heading" className="sr-only">
-        Submit a plant question
-      </h2>
-      <form onSubmit={handleSubmit} noValidate className="space-y-4">
-        <div>
-          <div className="flex items-baseline justify-between gap-2">
-            <label htmlFor={nameId} className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
-              Name
-            </label>
-            {touched && nameError && (
-              <span id={`${nameId}-error`} className="text-[11px] font-semibold text-warning">
-                {nameError}
-              </span>
-            )}
-          </div>
-          <input
-            id={nameId}
-            name="user_name"
-            type="text"
-            required
-            autoComplete="name"
-            value={name}
-            onChange={(e) => onNameChange(e.target.value)}
-            placeholder="Enter your name"
-            aria-invalid={touched && !!nameError}
-            aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
-            className={`mt-2 ${fieldClass}`}
-          />
-        </div>
+      <div className="mx-auto max-w-2xl">
+        <h2
+          id="ask-heading"
+          className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]"
+        >
+          Ask the plant documentation
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Cited answers from safety, maintenance, and quality sources.
+        </p>
 
-        <div>
+        <form onSubmit={handleSubmit} noValidate className="mt-6">
           <div className="flex items-baseline justify-between gap-3">
             <label
               htmlFor={questionId}
@@ -102,74 +83,91 @@ export function QuestionForm({
             id={questionId}
             name="question"
             required
-            rows={6}
-            minLength={MIN}
+            autoFocus
+            rows={5}
             maxLength={MAX}
             value={question}
             onChange={(e) => onQuestionChange(e.target.value)}
-            placeholder="Example: The CV-07 conveyor motor is overheating. Can I open the guard and inspect it without stopping the line?"
+            placeholder="The CV-07 conveyor motor is overheating. Can I open the guard and inspect it without stopping the line?"
             aria-invalid={touched && !!questionError}
-            aria-describedby={
-              touched && questionError ? `${questionId}-error` : `${questionId}-hint`
-            }
-            className={`mt-2 min-h-[160px] resize-y leading-relaxed ${fieldClass}`}
+            aria-describedby={touched && questionError ? `${questionId}-error` : undefined}
+            className={`mt-2 resize-y text-base leading-relaxed ${fieldClass}`}
           />
-          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
-            <p id={`${questionId}-hint`} className="text-[11px] text-muted-foreground">
-              Include equipment IDs and symptoms. Min {MIN} characters.
+          {touched && questionError && (
+            <p id={`${questionId}-error`} className="mt-1.5 text-xs font-semibold text-warning">
+              {questionError}
             </p>
-            {touched && questionError && (
-              <p id={`${questionId}-error`} className="text-[11px] font-semibold text-warning">
-                {questionError}
-              </p>
-            )}
-          </div>
-        </div>
+          )}
 
-        <fieldset className="mt-5">
-          <legend className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
-            Try
-          </legend>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+            <div className="sm:w-56">
+              <label
+                htmlFor={nameId}
+                className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+              >
+                Name
+              </label>
+              <input
+                id={nameId}
+                name="user_name"
+                type="text"
+                required
+                autoComplete="name"
+                value={name}
+                onChange={(e) => onNameChange(e.target.value)}
+                placeholder="Enter your name"
+                aria-invalid={touched && !!nameError}
+                aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
+                className={`mt-2 ${fieldClass}`}
+              />
+              {touched && nameError && (
+                <p id={`${nameId}-error`} className="mt-1.5 text-xs font-semibold text-warning">
+                  {nameError}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-1 flex-wrap items-center gap-2.5 sm:justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setTouched(false);
+                  onClear();
+                }}
+                className="inline-flex items-center gap-2 rounded-xl border border-input bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
+              >
+                <Eraser className="h-4 w-4" aria-hidden="true" />
+                Clear
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-colors hover:bg-primary/90 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Search className="h-4 w-4" aria-hidden="true" />
+                {isSubmitting ? "Working…" : "Find grounded answer"}
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-2 border-t border-hairline pt-5">
             {EXAMPLES.map((ex) => (
               <button
                 key={ex}
                 type="button"
                 onClick={() => onQuestionChange(ex)}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 text-left text-xs text-surface-foreground transition-colors hover:border-primary/35 hover:bg-maintenance-muted focus-visible:outline-none"
+                className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 text-left text-xs text-surface-foreground transition-colors hover:border-accent/60 hover:bg-safety-muted focus-visible:outline-none"
               >
                 <CornerDownLeft
-                  className="h-3 w-3 text-muted-foreground/70 transition-colors group-hover:text-primary"
+                  className="h-3 w-3 text-muted-foreground/70 transition-colors group-hover:text-safety-foreground"
                   aria-hidden="true"
                 />
                 {ex}
               </button>
             ))}
           </div>
-        </fieldset>
-
-        <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-hairline pt-5">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-card transition-colors hover:bg-primary/90 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" />
-            {isSubmitting ? "Working…" : "Find grounded answer"}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setTouched(false);
-              onClear();
-            }}
-            className="inline-flex items-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
-          >
-            <Eraser className="h-4 w-4" aria-hidden="true" />
-            Clear
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </section>
   );
 }

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "@/components/floorguide/Header";
-import { IntroPanel } from "@/components/floorguide/IntroPanel";
 import { QuestionForm } from "@/components/floorguide/QuestionForm";
 import { WorkflowProgress, WORKFLOW_STAGES } from "@/components/floorguide/WorkflowProgress";
 import { ResultSection } from "@/components/floorguide/ResultSection";
@@ -103,18 +102,22 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="flex min-h-screen flex-col bg-surface">
       <Header />
 
-      <main className="mx-auto max-w-6xl space-y-4 px-5 py-6 md:px-8 md:py-9">
+      <main
+        className={`mx-auto w-full px-5 py-6 md:px-8 ${
+          phase === "idle" || phase === "error"
+            ? "flex max-w-3xl flex-1 flex-col justify-center py-10"
+            : "max-w-6xl space-y-4 md:py-9"
+        }`}
+      >
         {USE_MOCK_API && (
-          <p className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-muted-foreground">
+          <p className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/50 bg-safety-muted px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-safety-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
             Mock mode · local sample data
           </p>
         )}
-
-        {phase !== "result" && <IntroPanel />}
 
         {phase === "working" ? (
           <WorkflowProgress activeStage={stage} onCancel={handleCancel} />
@@ -136,10 +139,10 @@ function Index() {
         )}
       </main>
 
-      <footer className="mt-6 border-t border-hairline bg-background">
-        <p className="mx-auto max-w-6xl px-5 py-5 text-xs text-muted-foreground md:px-8">
-          FloorGuide AI — demonstration system using fictional Northstar Foods
-          documentation. Confirm critical actions with approved plant procedures.
+      <footer className="border-t border-hairline">
+        <p className="mx-auto max-w-6xl px-5 py-4 text-center text-[11px] text-muted-foreground md:px-8">
+          Demo with fictional Northstar Foods documentation — confirm critical actions with
+          approved plant procedures.
         </p>
       </footer>
     </div>
