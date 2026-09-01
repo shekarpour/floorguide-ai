@@ -8,6 +8,7 @@ import type {
   AnswerBody,
   AskRequest,
   AskResponse,
+  EvidenceItem,
   SourceKey,
 } from "@/types/floorguide";
 import { supportLevelFromScore } from "@/types/floorguide";
