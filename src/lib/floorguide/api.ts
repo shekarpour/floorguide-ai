@@ -13,7 +13,7 @@ import type {
 import { supportLevelFromScore } from "@/types/floorguide";
 import { buildMockResponse } from "./mock-response";
 
-const API_BASE_URL =
+export const API_BASE_URL =
   (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ||
   "https://floorguide-qa-endpoint.fly.dev";
 const MOCK_FLAG = import.meta.env["VITE_USE_MOCK_API"] as string | undefined;
@@ -22,6 +22,11 @@ export const USE_MOCK_API = MOCK_FLAG === "true";
 
 /** Backend requests routinely take 15–30s; allow at least 60s. */
 export const REQUEST_TIMEOUT_MS = 60_000;
+
+/** Builds an absolute URL to the cited document section. */
+export function getCitationUrl(item: EvidenceItem): string {
+  return new URL(item.section_url, API_BASE_URL).toString();
+}
 
 export class ApiError extends Error {
   status: number | undefined;
@@ -102,11 +107,20 @@ export function normalizeAskResponse(raw: unknown, req: AskRequest): AskResponse
     alternative_answers: asArray(r["alternative_answers"]).map(normalizeAnswer),
     evidence: asArray(r["evidence"]).map((e, i) => {
       const o = (e ?? {}) as Record<string, unknown>;
+      const document_id = asString(o["document_id"]);
       return {
         evidence_id: asString(o["evidence_id"], `ev_${i}`),
         source: asSource(o["source"]),
-        document_id: asString(o["document_id"]),
+        document_id,
         document_title: asString(o["document_title"], "Untitled document"),
+        document_url: asString(
+          o["document_url"],
+          `/api/v1/documents/${document_id}`,
+        ),
+        section_url: asString(
+          o["section_url"],
+          `/api/v1/documents/${document_id}#section-${asString(o["section"])}`,
+        ),
         section: asString(o["section"]),
         section_title: asString(o["section_title"]),
         excerpt: asString(o["excerpt"]),
