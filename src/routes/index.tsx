@@ -106,7 +106,7 @@ function Index() {
     <div className="relative flex min-h-screen flex-col bg-surface">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/[0.07] via-surface to-surface"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/[0.07] via-surface to-surface"
       />
       <Header />
 
