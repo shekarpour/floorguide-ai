@@ -136,7 +136,7 @@ function Index() {
         )}
       </main>
 
-      <footer className="border-t border-border bg-background">
+      <footer className="mt-6 border-t border-hairline bg-background">
         <p className="mx-auto max-w-6xl px-5 py-5 text-xs text-muted-foreground md:px-8">
           FloorGuide AI — demonstration system using fictional Northstar Foods
           documentation. Confirm critical actions with approved plant procedures.
