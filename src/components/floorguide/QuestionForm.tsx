@@ -54,9 +54,21 @@ export function QuestionForm({
   return (
     <section
       aria-labelledby="ask-heading"
-      className="w-full rounded-2xl border border-hairline bg-background p-6 shadow-panel md:p-9"
+      className="relative w-full overflow-hidden rounded-2xl border border-hairline bg-background p-6 shadow-panel md:p-9"
     >
-      <div className="mx-auto max-w-2xl">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-primary to-accent"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-primary/[0.04] blur-3xl"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-accent/[0.06] blur-3xl"
+      />
+      <div className="relative mx-auto max-w-2xl">
         <h2
           id="ask-heading"
           className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]"
