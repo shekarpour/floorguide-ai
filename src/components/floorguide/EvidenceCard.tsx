@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ChevronDown, Quote } from "lucide-react";
+import { ChevronDown, ExternalLink, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { EvidenceItem } from "@/types/floorguide";
+import { getCitationUrl } from "@/lib/floorguide/api";
 import { SourceBadge } from "./SourceBadge";
 
 function relevanceLabel(r: number) {
@@ -19,20 +20,26 @@ export function EvidenceCard({
 }) {
   const [open, setOpen] = useState(defaultOpen ?? true);
   const pct = Math.round((item.relevance ?? 0) * 100);
+  const citationUrl = getCitationUrl(item);
 
   return (
     <article className="overflow-hidden rounded-xl border border-hairline bg-background shadow-card">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        className="flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface/70 focus-visible:outline-none"
-      >
+      <div className="flex w-full items-start gap-3 px-4 py-3 hover:bg-surface/70">
         <SourceBadge source={item.source} short className="mt-0.5 shrink-0" />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-semibold text-foreground">
+          <a
+            href={citationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="group inline-flex max-w-full items-center gap-1.5 truncate text-sm font-semibold text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
             {item.document_title}
-          </span>
+            <ExternalLink
+              className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary"
+              aria-hidden="true"
+            />
+          </a>
           <span className="mt-0.5 block truncate text-xs text-muted-foreground">
             §{item.section} · {item.section_title} · {item.document_id}
           </span>
@@ -49,21 +56,40 @@ export function EvidenceCard({
               {relevanceLabel(item.relevance ?? 0)} {pct}%
             </span>
           </span>
-          <ChevronDown
-            className={cn(
-              "h-4 w-4 text-muted-foreground transition-transform",
-              open && "rotate-180",
-            )}
-            aria-hidden="true"
-          />
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-label={open ? "Hide excerpt" : "Show excerpt"}
+            className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 transition-transform",
+                open && "rotate-180",
+              )}
+              aria-hidden="true"
+            />
+          </button>
         </span>
-      </button>
+      </div>
 
       {open && (
-        <blockquote className="flex gap-2.5 border-t border-hairline bg-surface/50 px-4 py-3.5 text-sm leading-relaxed text-foreground">
-          <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <span>{item.excerpt}</span>
-        </blockquote>
+        <div className="border-t border-hairline bg-surface/50 px-4 py-3.5">
+          <blockquote className="flex gap-2.5 text-sm leading-relaxed text-foreground">
+            <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <span>{item.excerpt}</span>
+          </blockquote>
+          <a
+            href={citationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            Explore source document
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+          </a>
+        </div>
       )}
     </article>
   );
