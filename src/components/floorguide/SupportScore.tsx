@@ -21,48 +21,44 @@ export function SupportScore({
   className?: string;
 }) {
   const cfg = LEVELS[level];
-  const r = 32;
+  const r = 30;
   const c = 2 * Math.PI * r;
-  const offset = c - (Math.max(0, Math.min(100, score)) / 100) * c;
+  const clamped = Math.max(0, Math.min(100, score));
+  const offset = c - (clamped / 100) * c;
 
   return (
-    <div className={cn("flex items-center gap-4", className)}>
-      <div className="relative h-20 w-20 shrink-0">
-        <svg viewBox="0 0 80 80" className="h-20 w-20 -rotate-90" aria-hidden="true">
+    <div
+      className={cn(
+        "flex items-center gap-3.5 rounded-xl border border-hairline bg-background px-4 py-3",
+        className,
+      )}
+    >
+      <div className="relative h-16 w-16 shrink-0">
+        <svg viewBox="0 0 72 72" className="h-16 w-16 -rotate-90" aria-hidden="true">
+          <circle cx="36" cy="36" r={r} fill="none" stroke="var(--border)" strokeWidth="6" />
           <circle
-            cx="40"
-            cy="40"
-            r={r}
-            fill="none"
-            stroke="var(--border)"
-            strokeWidth="7"
-          />
-          <circle
-            cx="40"
-            cy="40"
+            cx="36"
+            cy="36"
             r={r}
             fill="none"
             stroke={cfg.color}
-            strokeWidth="7"
+            strokeWidth="6"
             strokeLinecap="round"
             strokeDasharray={c}
             strokeDashoffset={offset}
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-lg font-bold tabular-nums text-foreground">
-          {score}
+        <span className="absolute inset-0 flex items-center justify-center text-base font-bold tabular-nums text-foreground">
+          {clamped}
         </span>
       </div>
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Evidence support score
+      <div className="min-w-0">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+          Evidence support
         </p>
-        <p className={cn("text-sm font-bold", cfg.text)}>
-          {cfg.label} · {score}/100
-        </p>
-        <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
-          This score reflects support from the available documentation, not a statistical
-          probability of correctness.
+        <p className={cn("text-sm font-bold", cfg.text)}>{cfg.label}</p>
+        <p className="mt-0.5 max-w-[15rem] text-[11px] leading-snug text-muted-foreground">
+          Documentation support, not a probability of correctness.
         </p>
       </div>
     </div>

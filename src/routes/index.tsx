@@ -106,10 +106,11 @@ function Index() {
     <div className="min-h-screen bg-surface">
       <Header />
 
-      <main className="mx-auto max-w-6xl space-y-5 px-5 py-7 md:px-8 md:py-10">
+      <main className="mx-auto max-w-6xl space-y-4 px-5 py-6 md:px-8 md:py-9">
         {USE_MOCK_API && (
-          <p className="rounded-md border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
-            Mock mode is enabled (VITE_USE_MOCK_API=true). Responses are local sample data.
+          <p className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+            Mock mode · local sample data
           </p>
         )}
 
@@ -135,7 +136,7 @@ function Index() {
         )}
       </main>
 
-      <footer className="border-t border-border bg-background">
+      <footer className="mt-6 border-t border-hairline bg-background">
         <p className="mx-auto max-w-6xl px-5 py-5 text-xs text-muted-foreground md:px-8">
           FloorGuide AI — demonstration system using fictional Northstar Foods
           documentation. Confirm critical actions with approved plant procedures.

@@ -1,5 +1,5 @@
 import { useId, useState, type FormEvent } from "react";
-import { Search, Eraser } from "lucide-react";
+import { Search, Eraser, CornerDownLeft } from "lucide-react";
 
 const EXAMPLES = [
   "Can I reach through the guard to clear a pouch jam?",
@@ -20,6 +20,9 @@ export interface QuestionFormProps {
   isSubmitting: boolean;
 }
 
+const fieldClass =
+  "w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground shadow-[inset_0_1px_0_rgba(0,0,0,0.01)] transition-colors placeholder:text-muted-foreground/60 hover:border-primary/30 focus-visible:border-ring focus-visible:outline-none";
+
 export function QuestionForm({
   name,
   question,
@@ -33,12 +36,12 @@ export function QuestionForm({
   const questionId = useId();
   const [touched, setTouched] = useState(false);
 
-  const nameError = name.trim().length === 0 ? "Please enter your name." : null;
+  const nameError = name.trim().length === 0 ? "Name required." : null;
   const questionError =
     question.trim().length === 0
-      ? "Please enter your plant question."
+      ? "Question required."
       : question.trim().length < MIN
-        ? `Please provide at least ${MIN} characters.`
+        ? `At least ${MIN} characters.`
         : null;
 
   const handleSubmit = (e: FormEvent) => {
@@ -51,20 +54,24 @@ export function QuestionForm({
   return (
     <section
       aria-labelledby="ask-heading"
-      className="rounded-lg border border-border bg-background p-6 shadow-card md:p-8"
+      className="rounded-xl border border-hairline bg-background p-5 shadow-card md:p-7"
     >
       <h2 id="ask-heading" className="sr-only">
         Submit a plant question
       </h2>
       <form onSubmit={handleSubmit} noValidate>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           <div className="md:col-span-1">
-            <label
-              htmlFor={nameId}
-              className="block text-sm font-semibold text-foreground"
-            >
-              Name <span className="text-warning">*</span>
-            </label>
+            <div className="flex items-baseline justify-between gap-2">
+              <label htmlFor={nameId} className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+                Name
+              </label>
+              {touched && nameError && (
+                <span id={`${nameId}-error`} className="text-[11px] font-semibold text-warning">
+                  {nameError}
+                </span>
+              )}
+            </div>
             <input
               id={nameId}
               name="user_name"
@@ -76,24 +83,22 @@ export function QuestionForm({
               placeholder="Enter your name"
               aria-invalid={touched && !!nameError}
               aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
-              className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm text-foreground transition-colors placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none"
+              className={`mt-2 ${fieldClass}`}
             />
-            {touched && nameError && (
-              <p id={`${nameId}-error`} className="mt-1.5 text-xs font-medium text-warning">
-                {nameError}
-              </p>
-            )}
+            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+              Recorded with the request for shift traceability.
+            </p>
           </div>
 
           <div className="md:col-span-2">
             <div className="flex items-baseline justify-between gap-3">
               <label
                 htmlFor={questionId}
-                className="block text-sm font-semibold text-foreground"
+                className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground"
               >
-                Plant question <span className="text-warning">*</span>
+                Plant question
               </label>
-              <span className="text-xs tabular-nums text-muted-foreground">
+              <span className="text-[11px] tabular-nums text-muted-foreground">
                 {question.length}/{MAX}
               </span>
             </div>
@@ -101,7 +106,7 @@ export function QuestionForm({
               id={questionId}
               name="question"
               required
-              rows={5}
+              rows={4}
               maxLength={MAX}
               value={question}
               onChange={(e) => onQuestionChange(e.target.value)}
@@ -110,48 +115,51 @@ export function QuestionForm({
               aria-describedby={
                 touched && questionError ? `${questionId}-error` : `${questionId}-hint`
               }
-              className="mt-2 w-full resize-y rounded-md border border-input bg-background px-3 py-2.5 text-sm leading-relaxed text-foreground transition-colors placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none"
+              className={`mt-2 resize-y leading-relaxed ${fieldClass}`}
             />
-            <p id={`${questionId}-hint`} className="mt-1.5 text-xs text-muted-foreground">
-              Minimum {MIN} characters. Include equipment IDs and symptoms where possible.
-            </p>
-            {touched && questionError && (
-              <p
-                id={`${questionId}-error`}
-                className="mt-1.5 text-xs font-medium text-warning"
-              >
-                {questionError}
+            <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
+              <p id={`${questionId}-hint`} className="text-[11px] text-muted-foreground">
+                Include equipment IDs and symptoms. Min {MIN} characters.
               </p>
-            )}
+              {touched && questionError && (
+                <p id={`${questionId}-error`} className="text-[11px] font-semibold text-warning">
+                  {questionError}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        <fieldset className="mt-6">
-          <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Example questions
+        <fieldset className="mt-5">
+          <legend className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+            Try
           </legend>
-          <div className="mt-2.5 flex flex-wrap gap-2">
+          <div className="mt-2 flex flex-wrap gap-2">
             {EXAMPLES.map((ex) => (
               <button
                 key={ex}
                 type="button"
                 onClick={() => onQuestionChange(ex)}
-                className="rounded-md border border-border bg-surface px-3 py-2 text-left text-xs text-foreground transition-colors hover:border-primary/40 hover:bg-maintenance-muted focus-visible:outline-none"
+                className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 text-left text-xs text-surface-foreground transition-colors hover:border-primary/35 hover:bg-maintenance-muted focus-visible:outline-none"
               >
+                <CornerDownLeft
+                  className="h-3 w-3 text-muted-foreground/70 transition-colors group-hover:text-primary"
+                  aria-hidden="true"
+                />
                 {ex}
               </button>
             ))}
           </div>
         </fieldset>
 
-        <div className="mt-7 flex flex-wrap gap-3 border-t border-border pt-6">
+        <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-hairline pt-5">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-card transition-colors hover:bg-primary/90 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Search className="h-4 w-4" aria-hidden="true" />
-            {isSubmitting ? "Finding answer…" : "Find grounded answer"}
+            {isSubmitting ? "Working…" : "Find grounded answer"}
           </button>
           <button
             type="button"
@@ -159,7 +167,7 @@ export function QuestionForm({
               setTouched(false);
               onClear();
             }}
-            className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
+            className="inline-flex items-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
           >
             <Eraser className="h-4 w-4" aria-hidden="true" />
             Clear
