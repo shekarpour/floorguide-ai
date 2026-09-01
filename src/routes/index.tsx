@@ -103,7 +103,7 @@ function Index() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-surface via-background to-surface">
       <Header />
 
       <main
