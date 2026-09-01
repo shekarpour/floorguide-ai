@@ -1,48 +1,39 @@
-# FloorGuide AI — Frontend
+# FloorGuide AI
 
-Plant knowledge assistant UI. Floor supervisors submit an operational question; the
-backend routes it to Safety, Maintenance, and/or Quality documentation and returns a
-grounded answer with citations and an evidence-support score.
+FloorGuide AI is a working manufacturing knowledge-assistant prototype built for the Agentic Forward-Deployed Engineer challenge. A floor supervisor submits an operational question; the backend routes it across safety, maintenance, and quality documentation, retrieves evidence, synthesizes a grounded answer, and verifies its support before returning an adaptive response.
 
-React + TypeScript + Vite + Tailwind CSS. No backend code, no auth, no direct database
-access. All model access happens server-side — no AI keys are ever present in this app.
+## Project structure
 
-## Local startup
+- `app/` — React/TanStack frontend deployed on Fly.io
+- `endpoints/` — FastAPI agentic workflow and document endpoints deployed on Fly.io
+- `docs/` — architecture and executive presentation artifacts
+- `endpoints/data/` — fictional, compact plant documentation used as the prototype corpus
+- `endpoints/evals/` — five-question golden benchmark and latest results
+
+## Live applications
+
+- Frontend: https://floorguide-ai-frontend.fly.dev
+- Backend API: https://floorguide-qa-endpoint.fly.dev
+- API documentation: https://floorguide-qa-endpoint.fly.dev/docs
+
+## Local development
+
+Frontend:
 
 ```bash
-bun install        # or: npm install
+cd app
+pnpm install
 cp .env.example .env
-bun run dev        # or: npm run dev
+pnpm run dev
 ```
 
-Open the printed local URL (default http://localhost:8080).
+Backend:
 
-## Environment
-
-| Variable | Purpose |
-| --- | --- |
-| `VITE_API_BASE_URL` | Base URL of the FastAPI backend, e.g. `http://localhost:8000` |
-| `VITE_USE_MOCK_API` | `true` serves an isolated local mock response; set to `false` to call the real API |
-
-## API contract
-
-Single endpoint: `POST ${VITE_API_BASE_URL}/api/v1/ask`
-
-Request:
-
-```json
-{ "user_name": "Jordan Lee", "question": "..." }
+```bash
+cd endpoints
+cp .env.example .env
+python -m pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
 
-The full typed request/response contract lives in **`src/types/floorguide.ts`** — it is
-the source of truth for the FastAPI implementation. Responses are defensively normalized
-in `src/lib/floorguide/api.ts`, so partial or malformed payloads degrade gracefully
-instead of crashing the UI.
-
-## Key files
-
-- `src/types/floorguide.ts` — API TypeScript interfaces (the contract)
-- `src/lib/floorguide/api.ts` — the only module that performs HTTP calls
-- `src/lib/floorguide/mock-response.ts` — isolated mock data (mock mode only)
-- `src/components/floorguide/*` — UI components
-- `src/routes/index.tsx` — page composition and request/workflow state
+The Gemini API key is configured only as a backend environment variable/Fly secret and is never included in the frontend or repository.

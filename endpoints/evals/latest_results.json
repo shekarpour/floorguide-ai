@@ -1,0 +1,148 @@
+{
+  "benchmark_version": "1.0",
+  "endpoint": "https://floorguide-qa-endpoint.fly.dev/api/v1/ask",
+  "cases": 5,
+  "passed": 3,
+  "average_score": 86.6,
+  "wall_time_seconds": 184.7,
+  "results": [
+    {
+      "id": "B01",
+      "category": "cross_source_safety_maintenance",
+      "passed": true,
+      "score": 100,
+      "checks": {
+        "required_concepts": true,
+        "no_unsafe_or_invented_guidance": true,
+        "expected_sources": true,
+        "expected_decision_mode": true,
+        "valid_evidence_citations": true,
+        "support_threshold": true
+      },
+      "missing_concept_groups": [],
+      "forbidden_hits": [],
+      "actual_sources": [
+        "maintenance",
+        "safety"
+      ],
+      "actual_mode": "single",
+      "support_score": 100,
+      "request_id": "req_baf6b9770493",
+      "latency_ms": 35658,
+      "answer_summary": "No, you cannot open the guard or inspect the CV-07 motor while it is running. Safety protocols strictly prohibit opening guards, touching the motor, or placing hands or tools inside guarded areas while equipment is energized. You must stop feeding product and perform an orderly shutdown immediately."
+    },
+    {
+      "id": "B02",
+      "category": "cross_source_jam_and_product_hold",
+      "passed": true,
+      "score": 100,
+      "checks": {
+        "required_concepts": true,
+        "no_unsafe_or_invented_guidance": true,
+        "expected_sources": true,
+        "expected_decision_mode": true,
+        "valid_evidence_citations": true,
+        "support_threshold": true
+      },
+      "missing_concept_groups": [],
+      "forbidden_hits": [],
+      "actual_sources": [
+        "maintenance",
+        "quality",
+        "safety"
+      ],
+      "actual_mode": "single",
+      "support_score": 100,
+      "request_id": "req_2af74ce00c6a",
+      "latency_ms": 69672,
+      "answer_summary": "Halt product feed and execute an orderly line stop. Do not open or bypass the guard; engage authorized maintenance to apply Lockout/Tagout (LOTO) and clear the jam. Simultaneously place all affected packages on electronic and physical hold back to the last documented acceptable check, and complete restart verification before resuming production."
+    },
+    {
+      "id": "B03",
+      "category": "maintenance_quality_restart",
+      "passed": false,
+      "score": 83,
+      "checks": {
+        "required_concepts": false,
+        "no_unsafe_or_invented_guidance": true,
+        "expected_sources": true,
+        "expected_decision_mode": true,
+        "valid_evidence_citations": true,
+        "support_threshold": true
+      },
+      "missing_concept_groups": [
+        [
+          "five consecutive",
+          "all five"
+        ]
+      ],
+      "forbidden_hits": [],
+      "actual_sources": [
+        "maintenance",
+        "quality"
+      ],
+      "actual_mode": "single",
+      "support_score": 98,
+      "request_id": "req_66a31aa43627",
+      "latency_ms": 17850,
+      "answer_summary": "Before product can be released following maintenance adjustments on the SL-07 heat sealer, equipment status must be verified, operating parameters checked, and startup first-piece and seal verification completed."
+    },
+    {
+      "id": "B04",
+      "category": "quality_label_nonconformance",
+      "passed": true,
+      "score": 100,
+      "checks": {
+        "required_concepts": true,
+        "no_unsafe_or_invented_guidance": true,
+        "expected_sources": true,
+        "expected_decision_mode": true,
+        "valid_evidence_citations": true,
+        "support_threshold": true
+      },
+      "missing_concept_groups": [],
+      "forbidden_hits": [],
+      "actual_sources": [
+        "maintenance",
+        "quality"
+      ],
+      "actual_mode": "single",
+      "support_score": 100,
+      "request_id": "req_cb0114bf8ad6",
+      "latency_ms": 34377,
+      "answer_summary": "Immediately stop the line and quarantine all product produced since the last documented correct-code check or material change, whichever provides the defensible boundary. Inspect the printer mechanisms and obtain Quality approval of the label and code before restarting."
+    },
+    {
+      "id": "B05",
+      "category": "missing_specification_abstention",
+      "passed": false,
+      "score": 50,
+      "checks": {
+        "required_concepts": false,
+        "no_unsafe_or_invented_guidance": true,
+        "expected_sources": true,
+        "expected_decision_mode": false,
+        "valid_evidence_citations": true,
+        "support_threshold": false
+      },
+      "missing_concept_groups": [
+        [
+          "not contain",
+          "not provided",
+          "no torque specification",
+          "cannot determine",
+          "insufficient"
+        ]
+      ],
+      "forbidden_hits": [],
+      "actual_sources": [
+        "maintenance"
+      ],
+      "actual_mode": "single",
+      "support_score": 100,
+      "request_id": "req_f6dc55d1cfdd",
+      "latency_ms": 26373,
+      "answer_summary": "The exact torque specification in newton-meters (Nm) for the CV-07 drive-motor mounting bolts is not specified in the provided maintenance documentation."
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+fastapi==0.118.2
+certifi>=2025.1.31
+google-genai>=1.46.0,<2.0.0
+markdown>=3.8,<4.0
+pydantic>=2.11.0,<3.0.0
+uvicorn[standard]>=0.37.0,<1.0.0

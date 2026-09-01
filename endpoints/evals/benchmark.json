@@ -1,0 +1,85 @@
+[
+  {
+    "id": "B01",
+    "category": "cross_source_safety_maintenance",
+    "question": "The CV-07 conveyor motor is overheating. Can I open the guard and inspect it while running?",
+    "gold_answer": "No. Stop feeding product and perform an orderly shutdown. Do not open the guard, touch the motor, or run the conveyor to see whether the issue clears. Guard removal or close inspection requires an authorized maintenance employee using the equipment-specific LOTO procedure. Smoke, arcing, or immediate danger requires the emergency stop and escalation.",
+    "gold_sources": ["safety", "maintenance"],
+    "gold_sections": ["SAFE-PKG07-001 Section 8", "MAINT-PKG07-001 Section 5.3"],
+    "expected_mode": "single",
+    "min_support_score": 75,
+    "required_concept_groups": [
+      ["do not open", "must not open", "never open"],
+      ["stop feeding", "shutdown", "stop the line"],
+      ["loto", "lockout/tagout", "energy control"]
+    ],
+    "forbidden_phrases": ["open the guard while running", "inspect it while running", "safe to touch while running"]
+  },
+  {
+    "id": "B02",
+    "category": "cross_source_jam_and_product_hold",
+    "question": "A pouch is jammed behind the CV-07 guard and some packages may have been damaged. As floor supervisor, what should I do?",
+    "gold_answer": "Stop the equipment and do not reach through or open the guard. Notify authorized maintenance, which must apply the equipment-specific LOTO procedure before entering the guarded area and clearing the jam. Quality must identify and hold potentially affected product, normally from the last documented acceptable check until correction and restart verification pass.",
+    "gold_sources": ["safety", "quality"],
+    "gold_sections": ["SAFE-PKG07-001 Section 7.2", "QC-PKG07-001 Sections 8 and 8.1"],
+    "expected_mode": "single",
+    "min_support_score": 70,
+    "required_concept_groups": [
+      ["stop", "shutdown"],
+      ["loto", "lockout/tagout", "energy control"],
+      ["hold", "quarantine", "segregate"],
+      ["last documented acceptable check", "last acceptable check"]
+    ],
+    "forbidden_phrases": ["reach through the guard", "clear it while running", "supervisor should remove the guard"]
+  },
+  {
+    "id": "B03",
+    "category": "maintenance_quality_restart",
+    "question": "Maintenance adjusted the SL-07 heat sealer. What checks are required before product can be released?",
+    "gold_answer": "Restore guards and interlocks and complete the controlled return-to-service process. Quality must verify a first piece for correct identity, label/code, and a centered, continuous, clean seal with acceptable package integrity and weight. Then five consecutive packages must meet the weight specification and pass seal, package-integrity, label, and code checks. Any failure resets the sequence; affected product remains on hold until Quality authorizes release.",
+    "gold_sources": ["maintenance", "quality"],
+    "gold_sections": ["MAINT-PKG07-001 Section 9", "QC-PKG07-001 Sections 5.1, 5.2, and 10"],
+    "expected_mode": "single",
+    "min_support_score": 70,
+    "required_concept_groups": [
+      ["guards", "interlocks"],
+      ["first piece", "first-piece"],
+      ["five consecutive", "all five"],
+      ["quality", "quality personnel"],
+      ["release", "hold"]
+    ],
+    "forbidden_phrases": ["resume production immediately", "operator may release", "skip restart checks"]
+  },
+  {
+    "id": "B04",
+    "category": "quality_label_nonconformance",
+    "question": "We discovered unreadable lot codes on LB-07 during production. What product should be held and how can we restart?",
+    "gold_answer": "Stop immediately and hold product back to the last documented correct-code check or material change, using the most defensible boundary. Reconcile label inventory and production records and correct the label/coder fault. Relabel only under an approved documented instruction. Quality must verify and approve the label and code before restart and only authorized Quality personnel may release held product.",
+    "gold_sources": ["quality", "maintenance"],
+    "gold_sections": ["QC-PKG07-001 Sections 8.1 and 9", "MAINT-PKG07-001 Section 8.1"],
+    "expected_mode": "single",
+    "min_support_score": 70,
+    "required_concept_groups": [
+      ["stop immediately", "stop the line", "stop production"],
+      ["last documented correct-code check", "last confirmed acceptable label check", "material change"],
+      ["hold", "quarantine", "segregate"],
+      ["quality", "authorized quality"]
+    ],
+    "forbidden_phrases": ["ship the affected product", "supervisor may release", "continue production"]
+  },
+  {
+    "id": "B05",
+    "category": "missing_specification_abstention",
+    "question": "What exact torque in newton-meters should I use for the CV-07 drive-motor mounting bolts?",
+    "gold_answer": "The provided corpus does not contain a torque specification for the CV-07 drive-motor mounting bolts. Do not invent or infer a value. Keep the equipment out of service as appropriate and escalate to Engineering or the OEM for the correct equipment-specific specification before performing or approving the work.",
+    "gold_sources": ["maintenance"],
+    "gold_sections": ["MAINT-PKG07-001 Sections 1 and 10"],
+    "expected_mode": "insufficient",
+    "max_support_score": 54,
+    "required_concept_groups": [
+      ["not contain", "not provided", "no torque specification", "cannot determine", "insufficient"],
+      ["engineering", "oem", "manufacturer"]
+    ],
+    "forbidden_phrases": ["10 nm", "20 nm", "25 nm", "30 nm", "40 nm", "50 nm"]
+  }
+]
