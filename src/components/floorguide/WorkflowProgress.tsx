@@ -21,24 +21,28 @@ export function WorkflowProgress({
     <section
       aria-labelledby="workflow-heading"
       aria-live="polite"
-      className="rounded-lg border border-border bg-background p-6 shadow-card md:p-8"
+      className="rounded-xl border border-hairline bg-background p-5 shadow-card md:p-7"
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 id="workflow-heading" className="text-base font-bold text-primary">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <h2 id="workflow-heading" className="text-sm font-bold text-primary">
           Building a grounded answer
+          <span className="ml-2 text-xs font-medium text-muted-foreground">
+            Step {activeStage + 1} of {WORKFLOW_STAGES.length} ·{" "}
+            {WORKFLOW_STAGES[activeStage]?.status}
+          </span>
         </h2>
         <button
           type="button"
           onClick={onCancel}
-          className="inline-flex items-center gap-1.5 rounded-md border border-input px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
+          className="inline-flex items-center gap-1.5 rounded-md border border-input px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none"
         >
           <XCircle className="h-3.5 w-3.5" aria-hidden="true" />
-          Cancel request
+          Cancel
         </button>
       </div>
 
       <div
-        className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-surface"
+        className="mt-4 h-1 w-full overflow-hidden rounded-full bg-surface"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={WORKFLOW_STAGES.length}
@@ -51,7 +55,7 @@ export function WorkflowProgress({
         />
       </div>
 
-      <ol className="mt-6 grid gap-3 md:grid-cols-2">
+      <ol className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {WORKFLOW_STAGES.map((stage, i) => {
           const done = i < activeStage;
           const active = i === activeStage;
@@ -59,32 +63,30 @@ export function WorkflowProgress({
             <li
               key={stage.title}
               className={cn(
-                "flex items-start gap-3 rounded-md border px-4 py-3 transition-colors",
-                done && "border-support-high/30 bg-support-high/6",
-                active && "border-primary/35 bg-maintenance-muted",
-                !done && !active && "border-border bg-surface/60",
+                "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors",
+                done && "border-support-high/25 bg-support-high/6",
+                active && "border-primary/30 bg-maintenance-muted",
+                !done && !active && "border-hairline bg-surface/60",
               )}
             >
-              <span className="mt-0.5 shrink-0" aria-hidden="true">
+              <span className="shrink-0" aria-hidden="true">
                 {done ? (
                   <Check className="h-4 w-4 text-support-high" />
                 ) : active ? (
                   <Loader2 className="h-4 w-4 animate-spin text-primary" />
                 ) : (
-                  <span className="block h-4 w-4 rounded-full border border-border" />
+                  <span className="block h-4 w-4 rounded-full border border-input" />
                 )}
               </span>
-              <span>
-                <span
-                  className={cn(
-                    "block text-sm font-semibold",
-                    done || active ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  {stage.title}
-                </span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">
-                  {done ? "Complete" : active ? stage.status : "Pending"}
+              <span
+                className={cn(
+                  "text-xs font-semibold",
+                  done || active ? "text-foreground" : "text-muted-foreground",
+                )}
+              >
+                {stage.title}
+                <span className="sr-only">
+                  {done ? " — complete" : active ? " — in progress" : " — pending"}
                 </span>
               </span>
             </li>
