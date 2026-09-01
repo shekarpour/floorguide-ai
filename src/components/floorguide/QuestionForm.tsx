@@ -54,7 +54,7 @@ export function QuestionForm({
   return (
     <section
       aria-labelledby="ask-heading"
-      className="relative w-full overflow-hidden rounded-2xl border border-hairline bg-background p-6 shadow-panel md:p-9"
+      className="relative w-full overflow-hidden rounded-2xl border border-hairline bg-gradient-to-b from-background via-background to-primary/[0.02] p-6 shadow-panel md:p-9"
     >
       <span
         aria-hidden="true"
