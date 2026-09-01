@@ -42,6 +42,10 @@ export interface EvidenceItem {
   source: SourceKey;
   document_id: string;
   document_title: string;
+  /** Backend path to the full document, e.g. /api/v1/documents/SAFE-PKG07-001 */
+  document_url: string;
+  /** Backend path that opens the document and scrolls to the cited section. */
+  section_url: string;
   /** Section number, e.g. "8" or "5.3". */
   section: string;
   section_title: string;

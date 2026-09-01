@@ -81,6 +81,8 @@ export function buildMockResponse(req: AskRequest): AskResponse {
         source: "safety",
         document_id: "SAFE-PKG07-001",
         document_title: "Line PKG-07 Safety Procedures",
+        document_url: "/api/v1/documents/SAFE-PKG07-001",
+        section_url: "/api/v1/documents/SAFE-PKG07-001#section-8",
         section: "8",
         section_title: "Overheating, unusual noise, vibration, or belt drift",
         excerpt:
@@ -92,6 +94,8 @@ export function buildMockResponse(req: AskRequest): AskResponse {
         source: "maintenance",
         document_id: "MAINT-PKG07-001",
         document_title: "Line PKG-07 Maintenance Manual",
+        document_url: "/api/v1/documents/MAINT-PKG07-001",
+        section_url: "/api/v1/documents/MAINT-PKG07-001#section-5.3",
         section: "5.3",
         section_title: "Conveyor motor is hot or trips on overload",
         excerpt:
@@ -103,8 +107,10 @@ export function buildMockResponse(req: AskRequest): AskResponse {
             {
               evidence_id: "ev_3",
               source: "quality" as const,
-              document_id: "QC-PKG07-004",
+              document_id: "QC-PKG07-001",
               document_title: "Packaging Quality Control Standards",
+              document_url: "/api/v1/documents/QC-PKG07-001",
+              section_url: "/api/v1/documents/QC-PKG07-001#section-3.2",
               section: "3.2",
               section_title: "Product disposition after unplanned line stops",
               excerpt:
