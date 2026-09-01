@@ -21,7 +21,7 @@ export interface QuestionFormProps {
 }
 
 const fieldClass =
-  "w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground transition-colors placeholder:text-muted-foreground/60 hover:border-primary/40 focus-visible:border-ring focus-visible:outline-none";
+  "w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground shadow-sm transition-all placeholder:text-muted-foreground/60 hover:border-primary/40 hover:shadow-[0_0_0_1px_hsl(var(--color-primary)/10%)] focus-visible:border-primary focus-visible:shadow-[0_0_0_4px_hsl(var(--color-primary)/12%)] focus-visible:outline-none";
 
 export function QuestionForm({
   name,
