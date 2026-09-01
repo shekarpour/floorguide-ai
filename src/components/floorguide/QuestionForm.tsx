@@ -59,74 +59,70 @@ export function QuestionForm({
       <h2 id="ask-heading" className="sr-only">
         Submit a plant question
       </h2>
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="grid gap-5 md:grid-cols-3">
-          <div className="md:col-span-1">
-            <div className="flex items-baseline justify-between gap-2">
-              <label htmlFor={nameId} className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
-                Name
-              </label>
-              {touched && nameError && (
-                <span id={`${nameId}-error`} className="text-[11px] font-semibold text-warning">
-                  {nameError}
-                </span>
-              )}
-            </div>
-            <input
-              id={nameId}
-              name="user_name"
-              type="text"
-              required
-              autoComplete="name"
-              value={name}
-              onChange={(e) => onNameChange(e.target.value)}
-              placeholder="Enter your name"
-              aria-invalid={touched && !!nameError}
-              aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
-              className={`mt-2 ${fieldClass}`}
-            />
-            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-              Recorded with the request for shift traceability.
-            </p>
-          </div>
-
-          <div className="md:col-span-2">
-            <div className="flex items-baseline justify-between gap-3">
-              <label
-                htmlFor={questionId}
-                className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground"
-              >
-                Plant question
-              </label>
-              <span className="text-[11px] tabular-nums text-muted-foreground">
-                {question.length}/{MAX}
+      <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        <div>
+          <div className="flex items-baseline justify-between gap-2">
+            <label htmlFor={nameId} className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+              Name
+            </label>
+            {touched && nameError && (
+              <span id={`${nameId}-error`} className="text-[11px] font-semibold text-warning">
+                {nameError}
               </span>
-            </div>
-            <textarea
-              id={questionId}
-              name="question"
-              required
-              rows={4}
-              maxLength={MAX}
-              value={question}
-              onChange={(e) => onQuestionChange(e.target.value)}
-              placeholder="Example: The CV-07 conveyor motor is overheating. Can I open the guard and inspect it without stopping the line?"
-              aria-invalid={touched && !!questionError}
-              aria-describedby={
-                touched && questionError ? `${questionId}-error` : `${questionId}-hint`
-              }
-              className={`mt-2 resize-y leading-relaxed ${fieldClass}`}
-            />
-            <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
-              <p id={`${questionId}-hint`} className="text-[11px] text-muted-foreground">
-                Include equipment IDs and symptoms. Min {MIN} characters.
+            )}
+          </div>
+          <input
+            id={nameId}
+            name="user_name"
+            type="text"
+            required
+            autoComplete="name"
+            value={name}
+            onChange={(e) => onNameChange(e.target.value)}
+            placeholder="Enter your name"
+            aria-invalid={touched && !!nameError}
+            aria-describedby={touched && nameError ? `${nameId}-error` : undefined}
+            className={`mt-2 ${fieldClass}`}
+          />
+        </div>
+
+        <div>
+          <div className="flex items-baseline justify-between gap-3">
+            <label
+              htmlFor={questionId}
+              className="text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+            >
+              Plant question
+            </label>
+            <span className="text-[11px] tabular-nums text-muted-foreground">
+              {question.length}/{MAX}
+            </span>
+          </div>
+          <textarea
+            id={questionId}
+            name="question"
+            required
+            rows={6}
+            minLength={MIN}
+            maxLength={MAX}
+            value={question}
+            onChange={(e) => onQuestionChange(e.target.value)}
+            placeholder="Example: The CV-07 conveyor motor is overheating. Can I open the guard and inspect it without stopping the line?"
+            aria-invalid={touched && !!questionError}
+            aria-describedby={
+              touched && questionError ? `${questionId}-error` : `${questionId}-hint`
+            }
+            className={`mt-2 min-h-[160px] resize-y leading-relaxed ${fieldClass}`}
+          />
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
+            <p id={`${questionId}-hint`} className="text-[11px] text-muted-foreground">
+              Include equipment IDs and symptoms. Min {MIN} characters.
+            </p>
+            {touched && questionError && (
+              <p id={`${questionId}-error`} className="text-[11px] font-semibold text-warning">
+                {questionError}
               </p>
-              {touched && questionError && (
-                <p id={`${questionId}-error`} className="text-[11px] font-semibold text-warning">
-                  {questionError}
-                </p>
-              )}
-            </div>
+            )}
           </div>
         </div>
 
